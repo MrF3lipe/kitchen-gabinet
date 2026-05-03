@@ -25,11 +25,12 @@ function RecipeDetail() {
   const locale = useLocale();
   const nav = useNavigate();
   const { recipes, favorites } = useDb();
-  const recipe = recipes.find((r) => r.id === id);
+  const recipeMaybe = recipes.find((r) => r.id === id);
+  const recipe = recipeMaybe!;
   const [servings, setServings] = useState(recipe?.servings ?? 4);
   const [rating, setRating] = useState(recipe?.rating ?? 0);
 
-  if (!recipe) {
+  if (!recipeMaybe) {
     return <AppShell><div className="p-8 text-center">No encontrada</div></AppShell>;
   }
 
@@ -40,7 +41,7 @@ function RecipeDetail() {
   const equip = locale === "en" && recipe.equipment_en ? recipe.equipment_en : recipe.equipment;
   const steps = locale === "en" && recipe.steps_en ? recipe.steps_en : recipe.steps;
 
-  const factor = servings / recipe.servings;
+  const factor = servings / recipeMaybe?.servings;
 
   function exportJson() {
     const blob = new Blob([JSON.stringify(recipe, null, 2)], { type: "application/json" });

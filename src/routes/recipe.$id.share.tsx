@@ -16,7 +16,8 @@ function SharePage() {
   const t = useT();
   const locale = useLocale();
   const { recipes } = useDb();
-  const recipe = recipes.find((r) => r.id === id);
+  const recipeMaybe = recipes.find((r) => r.id === id);
+  const recipe = recipeMaybe!;
   const cardRef = useRef<HTMLDivElement>(null);
   const [qr, setQr] = useState<string | null>(null);
   const [tab, setTab] = useState<"image" | "qr">("image");
@@ -32,7 +33,7 @@ function SharePage() {
     QRCode.toDataURL(JSON.stringify(minimal), { width: 320, margin: 2 }).then(setQr).catch(() => {});
   }, [recipe, tab]);
 
-  if (!recipe) return <AppShell><div className="p-8">404</div></AppShell>;
+  if (!recipeMaybe) return <AppShell><div className="p-8">404</div></AppShell>;
 
   const title = locale === "en" && recipe.title_en ? recipe.title_en : recipe.title;
   const ings = locale === "en" && recipe.ingredients_en ? recipe.ingredients_en : recipe.ingredients;

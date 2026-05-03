@@ -15,7 +15,8 @@ function CookMode() {
   const locale = useLocale();
   const nav = useNavigate();
   const { recipes } = useDb();
-  const recipe = recipes.find((r) => r.id === id);
+  const recipeMaybe = recipes.find((r) => r.id === id);
+  const recipe = recipeMaybe!;
   const [step, setStep] = useState(0);
   const wakeLockRef = useRef<unknown>(null);
 
@@ -32,7 +33,7 @@ function CookMode() {
     };
   }, []);
 
-  if (!recipe) return <AppShell><div className="p-8">404</div></AppShell>;
+  if (!recipeMaybe) return <AppShell><div className="p-8">404</div></AppShell>;
 
   const steps = locale === "en" && recipe.steps_en ? recipe.steps_en : recipe.steps;
   const title = locale === "en" && recipe.title_en ? recipe.title_en : recipe.title;
