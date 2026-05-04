@@ -1,6 +1,6 @@
-import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Heart, Clock, Users, Share2, MoreVertical, ChefHat, Trash2, Download, QrCode, Star } from "lucide-react";
+import { Heart, Clock, Users, Share2, MoreVertical, ChefHat, Trash2, Download, Star, Link2 } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Badge } from "@/components/RecipeCard";
 import {
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { db, useDb } from "@/lib/db";
 import { useT, useLocale } from "@/lib/i18n";
+import { findSubstitutes } from "@/lib/substitutes";
 
 export const Route = createFileRoute("/recipe/$id")({
   component: RecipeDetail,
@@ -29,6 +30,7 @@ function RecipeDetail() {
   const recipe = recipeMaybe!;
   const [servings, setServings] = useState(recipe?.servings ?? 4);
   const [rating, setRating] = useState(recipe?.rating ?? 0);
+  const [openSubs, setOpenSubs] = useState<number | null>(null);
 
   if (!recipeMaybe) {
     return <AppShell><div className="p-8 text-center">No encontrada</div></AppShell>;
@@ -51,6 +53,32 @@ function RecipeDetail() {
     a.download = `${title.replace(/\s+/g, "-").toLowerCase()}.json`;
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  /**
+   * Idea #10: compartir como link efímero.
+   * Comprimimos el JSON y lo metemos en el hash del URL — sin servidor.
+   * Cualquiera con el enlace puede abrir/importar la receta.
+   */
+  async function shareAsLink() {
+    try {
+      const json = JSON.stringify(recipe);
+      const b64 = btoa(unescape(encodeURIComponent(json)));
+      const url = `${location.origin}/#import=${b64}`;
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        prompt(t("shareLink"), url);
+      }
+      const navAny = navigator as Navigator & { share?: (d: { title?: string; url?: string; text?: string }) => Promise<void> };
+      if (navAny.share) {
+        try { await navAny.share({ title, url }); } catch {}
+      } else {
+        alert(t("linkCopied"));
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   function deleteRecipe() {
@@ -95,6 +123,9 @@ function RecipeDetail() {
                 <DropdownMenuItem onClick={exportJson}>
                   <Download className="mr-2 h-4 w-4" /> {t("exportJson")}
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={shareAsLink}>
+                  <Link2 className="mr-2 h-4 w-4" /> {t("shareLink")}
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={deleteRecipe} className="text-destructive">
                   <Trash2 className="mr-2 h-4 w-4" /> {t("delete")}
                 </DropdownMenuItem>
@@ -135,12 +166,36 @@ function RecipeDetail() {
             📋 {t("ingredients")}
           </h2>
           <ul className="divide-y divide-outline-variant/50">
-            {ings.map((i, idx) => (
-              <li key={idx} className="flex items-baseline gap-3 py-2 text-sm">
-                <span className="font-bold text-primary">{scale(i.quantity, factor)}</span>
-                <span>{i.name}</span>
-              </li>
-            ))}
+            {ings.map((i, idx) => {
+              const subs = findSubstitutes(i.name);
+              return (
+                <li key={idx} className="py-2">
+                  <div className="flex items-baseline gap-3 text-sm">
+                    <span className="font-bold text-primary">{scale(i.quantity, factor)}</span>
+                    <span className="flex-1">{i.name}</span>
+                    {subs.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setOpenSubs(openSubs === idx ? null : idx)}
+                        className="text-xs font-semibold text-secondary"
+                      >
+                        ↻
+                      </button>
+                    )}
+                  </div>
+                  {openSubs === idx && subs.length > 0 && (
+                    <div className="mt-1 ml-1 rounded-lg bg-surface-container-low p-2 text-xs">
+                      <div className="mb-1 font-semibold text-on-surface-variant">{t("substitutes")}:</div>
+                      <ul className="space-y-0.5">
+                        {subs.map((s, k) => (
+                          <li key={k}>• <span className="font-medium">{s.label}</span>{s.note ? <span className="text-on-surface-variant"> — {s.note}</span> : null}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </section>
 

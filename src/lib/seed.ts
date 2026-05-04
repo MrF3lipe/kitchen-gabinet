@@ -1,4 +1,4 @@
-import type { PantryItem, Recipe } from "./types";
+import type { PantryCategory, PantryItem, Recipe, Unit } from "./types";
 
 const img = (q: string) =>
   `https://images.unsplash.com/${q}?auto=format&fit=crop&w=900&q=70`;
@@ -404,25 +404,45 @@ export function seedRecipes(): Recipe[] {
   ];
 }
 
-export function seedPantry(): PantryItem[] {
-  const item = (id: string, name: string, name_en: string, category: string, available = true): PantryItem => ({
-    id, name, name_en, category, available,
-  });
+// (types ya importados arriba)
+
+export function seedPantryCategories(): PantryCategory[] {
   return [
-    item("p1", "Leche Entera", "Whole milk", "Lácteos & Huevos"),
-    item("p2", "Huevos (Docena)", "Eggs (dozen)", "Lácteos & Huevos"),
-    item("p3", "Mantequilla sin sal", "Unsalted butter", "Lácteos & Huevos", false),
-    item("p4", "Cebolla Blanca", "White onion", "Verduras Frescas"),
-    item("p5", "Zanahorias", "Carrots", "Verduras Frescas", false),
-    item("p6", "Ajo (Cabezas)", "Garlic (heads)", "Verduras Frescas"),
-    item("p7", "Tomate", "Tomato", "Verduras Frescas"),
-    item("p8", "Albahaca fresca", "Fresh basil", "Verduras Frescas"),
-    item("p9", "Pimienta Negra Molida", "Ground black pepper", "Especias Secas"),
-    item("p10", "Sal Marina Fina", "Fine sea salt", "Especias Secas"),
-    item("p11", "Orégano Seco", "Dried oregano", "Especias Secas"),
-    item("p12", "Aceite de Oliva", "Olive oil", "Aceites & Vinagres"),
-    item("p13", "Harina", "Flour", "Granos & Pastas"),
-    item("p14", "Avena", "Oats", "Granos & Pastas"),
-    item("p15", "Spaghetti", "Spaghetti", "Granos & Pastas"),
+    { id: "c1", name: "Lácteos & Huevos", name_en: "Dairy & Eggs", emoji: "🥚", order: 1 },
+    { id: "c2", name: "Verduras Frescas", name_en: "Fresh Vegetables", emoji: "🥦", order: 2 },
+    { id: "c3", name: "Frutas", name_en: "Fruits", emoji: "🍎", order: 3 },
+    { id: "c4", name: "Carnes", name_en: "Meat", emoji: "🥩", order: 4 },
+    { id: "c5", name: "Pescado", name_en: "Fish", emoji: "🐟", order: 5 },
+    { id: "c6", name: "Especias Secas", name_en: "Dry Spices", emoji: "🌶️", order: 6 },
+    { id: "c7", name: "Aceites & Vinagres", name_en: "Oils & Vinegars", emoji: "🫒", order: 7 },
+    { id: "c8", name: "Granos & Pastas", name_en: "Grains & Pasta", emoji: "🌾", order: 8 },
+    { id: "c9", name: "Otros", name_en: "Other", emoji: "🧂", order: 99 },
+  ];
+}
+
+export function seedPantry(): PantryItem[] {
+  const item = (
+    id: string, name: string, name_en: string, category: string,
+    quantity: number, unit: Unit, available = true,
+  ): PantryItem => ({ id, name, name_en, category, quantity, unit, available });
+
+  return [
+    item("p1", "Leche Entera", "Whole milk", "Lácteos & Huevos", 1, "L"),
+    item("p2", "Huevos", "Eggs", "Lácteos & Huevos", 12, "ud"),
+    item("p3", "Mantequilla sin sal", "Unsalted butter", "Lácteos & Huevos", 0, "g", false),
+    item("p4", "Cebolla Blanca", "White onion", "Verduras Frescas", 3, "ud"),
+    item("p5", "Zanahorias", "Carrots", "Verduras Frescas", 0, "ud", false),
+    item("p6", "Ajo", "Garlic", "Verduras Frescas", 2, "ud"),
+    item("p7", "Tomate", "Tomato", "Verduras Frescas", 5, "ud"),
+    item("p8", "Albahaca fresca", "Fresh basil", "Verduras Frescas", 1, "ud"),
+    item("p9", "Pimienta Negra", "Black pepper", "Especias Secas", 50, "g"),
+    item("p10", "Sal Marina", "Sea salt", "Especias Secas", 200, "g"),
+    item("p11", "Orégano Seco", "Dried oregano", "Especias Secas", 30, "g"),
+    item("p12", "Aceite de Oliva", "Olive oil", "Aceites & Vinagres", 750, "ml"),
+    item("p13", "Harina", "Flour", "Granos & Pastas", 1, "kg"),
+    item("p14", "Avena", "Oats", "Granos & Pastas", 500, "g"),
+    item("p15", "Spaghetti", "Spaghetti", "Granos & Pastas", 500, "g"),
+    item("p16", "Manzana", "Apple", "Frutas", 4, "ud"),
+    item("p17", "Plátano", "Banana", "Frutas", 3, "ud"),
   ];
 }

@@ -1,0 +1,27 @@
+# LEEME — Kitchen Cabinet
+
+App movil de recetas y despensa. Sin cuentas, todos los datos se guardan en el telefono.
+
+## Como compilar e instalar el APK (Windows)
+
+1. **Una vez**: instala los requisitos
+   - **Bun** (https://bun.sh) o **Node.js 20+** (https://nodejs.org)
+   - **Java JDK 21** (https://adoptium.net)
+   - **Android Studio** (https://developer.android.com/studio) — al abrirlo, deja que descargue Android SDK 34
+   - Variables de entorno (Panel de control → Sistema → Variables de entorno):
+     - `JAVA_HOME` = carpeta del JDK 21 (ej. `C:\Program Files\Eclipse Adoptium\jdk-21`)
+     - `ANDROID_HOME` = `%LOCALAPPDATA%\Android\Sdk`
+     - Añade a `PATH`: `%ANDROID_HOME%\platform-tools`
+
+2. **Cada vez que actualices el codigo**:
+   - Doble click en `INSTALAR.bat` (solo la primera vez)
+   - Doble click en `GENERAR-APK.bat`
+     → genera `KitchenCabinet.apk` en tu Escritorio
+   - Conecta el telefono por USB con depuracion activada
+   - Doble click en `INSTALAR-EN-TELEFONO.bat`
+
+Tambien puedes copiar el APK al telefono manualmente y abrirlo desde el explorador de archivos (te pedira permitir instalar de origenes desconocidos).
+
+## Arquitectura del proyecto
+
+Lee `DOCUMENTACION.md` para una explicacion completa, y `GUIA-DE-USO.md` para saber que hace cada pantalla.

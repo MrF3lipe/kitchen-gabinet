@@ -9,9 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as ShoppingRouteImport } from './routes/shopping'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as PlanRouteImport } from './routes/plan'
 import { Route as PantryRouteImport } from './routes/pantry'
 import { Route as NewRouteImport } from './routes/new'
 import { Route as FavoritesRouteImport } from './routes/favorites'
@@ -20,6 +22,11 @@ import { Route as RecipeIdRouteImport } from './routes/recipe.$id'
 import { Route as RecipeIdShareRouteImport } from './routes/recipe.$id.share'
 import { Route as RecipeIdCookRouteImport } from './routes/recipe.$id.cook'
 
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShoppingRoute = ShoppingRouteImport.update({
   id: '/shopping',
   path: '/shopping',
@@ -33,6 +40,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanRoute = PlanRouteImport.update({
+  id: '/plan',
+  path: '/plan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PantryRoute = PantryRouteImport.update({
@@ -76,9 +88,11 @@ export interface FileRoutesByFullPath {
   '/favorites': typeof FavoritesRoute
   '/new': typeof NewRoute
   '/pantry': typeof PantryRoute
+  '/plan': typeof PlanRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
+  '/tools': typeof ToolsRoute
   '/recipe/$id': typeof RecipeIdRouteWithChildren
   '/recipe/$id/cook': typeof RecipeIdCookRoute
   '/recipe/$id/share': typeof RecipeIdShareRoute
@@ -88,9 +102,11 @@ export interface FileRoutesByTo {
   '/favorites': typeof FavoritesRoute
   '/new': typeof NewRoute
   '/pantry': typeof PantryRoute
+  '/plan': typeof PlanRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
+  '/tools': typeof ToolsRoute
   '/recipe/$id': typeof RecipeIdRouteWithChildren
   '/recipe/$id/cook': typeof RecipeIdCookRoute
   '/recipe/$id/share': typeof RecipeIdShareRoute
@@ -101,9 +117,11 @@ export interface FileRoutesById {
   '/favorites': typeof FavoritesRoute
   '/new': typeof NewRoute
   '/pantry': typeof PantryRoute
+  '/plan': typeof PlanRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
+  '/tools': typeof ToolsRoute
   '/recipe/$id': typeof RecipeIdRouteWithChildren
   '/recipe/$id/cook': typeof RecipeIdCookRoute
   '/recipe/$id/share': typeof RecipeIdShareRoute
@@ -115,9 +133,11 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/new'
     | '/pantry'
+    | '/plan'
     | '/search'
     | '/settings'
     | '/shopping'
+    | '/tools'
     | '/recipe/$id'
     | '/recipe/$id/cook'
     | '/recipe/$id/share'
@@ -127,9 +147,11 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/new'
     | '/pantry'
+    | '/plan'
     | '/search'
     | '/settings'
     | '/shopping'
+    | '/tools'
     | '/recipe/$id'
     | '/recipe/$id/cook'
     | '/recipe/$id/share'
@@ -139,9 +161,11 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/new'
     | '/pantry'
+    | '/plan'
     | '/search'
     | '/settings'
     | '/shopping'
+    | '/tools'
     | '/recipe/$id'
     | '/recipe/$id/cook'
     | '/recipe/$id/share'
@@ -152,14 +176,23 @@ export interface RootRouteChildren {
   FavoritesRoute: typeof FavoritesRoute
   NewRoute: typeof NewRoute
   PantryRoute: typeof PantryRoute
+  PlanRoute: typeof PlanRoute
   SearchRoute: typeof SearchRoute
   SettingsRoute: typeof SettingsRoute
   ShoppingRoute: typeof ShoppingRoute
+  ToolsRoute: typeof ToolsRoute
   RecipeIdRoute: typeof RecipeIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shopping': {
       id: '/shopping'
       path: '/shopping'
@@ -179,6 +212,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plan': {
+      id: '/plan'
+      path: '/plan'
+      fullPath: '/plan'
+      preLoaderRoute: typeof PlanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pantry': {
@@ -252,20 +292,13 @@ const rootRouteChildren: RootRouteChildren = {
   FavoritesRoute: FavoritesRoute,
   NewRoute: NewRoute,
   PantryRoute: PantryRoute,
+  PlanRoute: PlanRoute,
   SearchRoute: SearchRoute,
   SettingsRoute: SettingsRoute,
   ShoppingRoute: ShoppingRoute,
+  ToolsRoute: ToolsRoute,
   RecipeIdRoute: RecipeIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

@@ -96,5 +96,18 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  // Importación de receta desde hash (#import=base64) — idea #10
+  if (typeof window !== "undefined" && window.location.hash.startsWith("#import=")) {
+    try {
+      const b64 = window.location.hash.slice("#import=".length);
+      const json = decodeURIComponent(escape(atob(b64)));
+      const recipe = JSON.parse(json);
+      import("@/lib/db").then(({ db, uid }) => {
+        db.addRecipe({ ...recipe, id: uid(), createdAt: Date.now(), updatedAt: Date.now() });
+        window.location.hash = "";
+        alert("Receta importada ✓");
+      });
+    } catch (e) { console.error(e); }
+  }
   return <Outlet />;
 }

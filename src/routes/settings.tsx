@@ -89,6 +89,14 @@ function SettingsPage() {
             <ShoppingCart className="h-6 w-6 text-primary" />
             <span className="text-sm font-semibold">{t("shopping")}</span>
           </Link>
+          <Link to="/plan" className="flex flex-col items-center gap-2 rounded-2xl bg-card p-4 shadow-sm">
+            <span className="text-2xl">📅</span>
+            <span className="text-sm font-semibold">{t("weekPlan")}</span>
+          </Link>
+          <Link to="/tools" className="flex flex-col items-center gap-2 rounded-2xl bg-card p-4 shadow-sm">
+            <span className="text-2xl">🧰</span>
+            <span className="text-sm font-semibold">Herramientas</span>
+          </Link>
         </div>
       </div>
     </AppShell>
