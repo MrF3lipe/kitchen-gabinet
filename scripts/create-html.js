@@ -22,9 +22,26 @@ const html = `<!DOCTYPE html>
   <base href="./">
   <link rel="stylesheet" href="assets/${cssFile}">
 </head>
-<body>
+<body style="background: #fbf9f8; margin:0; padding:20px; font-family:sans-serif;">
+  <!-- Mensaje PRE-React -->
+  <div id="preload-msg" style="text-align:center; margin-top:30vh;">
+    <h1 style="color:#9a4028;">HTML cargado correctamente ✅</h1>
+    <p id="status">Esperando JavaScript...</p>
+  </div>
+
   <div id="root"></div>
+
   <script type="module" src="assets/${entryJs}"></script>
+
+  <!-- Mensaje POST-React -->
+  <script>
+    // Si React no reemplaza el mensaje, mostraremos error
+    setTimeout(() => {
+      if (document.getElementById('preload-msg')?.style.display !== 'none') {
+        document.getElementById('status').innerText += ' React no montó 😞';
+      }
+    }, 4000);
+  </script>
 </body>
 </html>`;
 
