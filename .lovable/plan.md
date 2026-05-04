@@ -1,83 +1,76 @@
-# Kitchen Cabinet — Plan de construcción
+# Plan: Kitchen Cabinet → App móvil empaquetada (APK) con mejoras
 
-App móvil tipo PWA para gestionar despensa, descubrir y crear recetas. Sin cuentas: todo se guarda en el teléfono. Bilingüe (ES/EN). Fiel al diseño Heirloom Modern que enviaste.
+## 1. Cambios en la app (lo que pediste)
 
-## Stack
+### Despensa (`src/routes/pantry.tsx`, `src/lib/db.ts`, `src/lib/types.ts`)
 
-- **React 19 + TanStack Start + Vite + Tailwind v4** con tokens del `DESIGN.md` (terracota `#9a4028`, oliva `#56642b`, fondo `#fbf9f8`).
-- **Newsreader** (titulares serif) + **Plus Jakarta Sans** (UI) desde Google Fonts.
-- **shadcn/ui** ya instalado, re-skinneado.
-- **Almacenamiento local:** IndexedDB vía `idb-keyval` (recetas, despensa, favoritos, historial). Nada sale del teléfono salvo que el usuario lo decida.
-- **PWA instalable** (manifest + icono) — se añade a pantalla de inicio y se siente como app nativa. Te aviso: las features PWA solo funcionan en la versión publicada, no en el editor.
-- **i18n** ligero con un diccionario propio (ES por defecto, toggle a EN).
-- **Export como imagen:** `html-to-image` para renderizar la receta a PNG y descargarla / compartirla con la Web Share API.
-- **Búsqueda online de recetas:** Lovable AI Gateway (Gemini con grounding) — el usuario escribe "pasta con espinacas" y la IA devuelve recetas reales con fuentes citadas, importables a su biblioteca local con un toque.
-- **Importar receta desde URL:** pegar enlace → la IA extrae título, ingredientes, pasos y los guarda local.
+- **Cantidad por ítem**: añadir `quantity: number` y `unit?: string` (ej: 3 unidades, 500 g, 1 L) en `PantryItem`. La lista deja de ser solo un switch: muestra `−  3 ud  +` con botones de incremento/decremento. `available` se deriva de `quantity > 0`, pero se mantiene un toggle "ocultar" para los que no quieres considerar.
+- **Gestionar categorías**: nueva sección "Categorías" arriba con chips editables. Botones para **añadir categoría nueva** (input + emoji opcional) y **eliminar categoría** (con aviso si tiene ítems: mover a "Otros" o borrar). Las categorías dejan de ser fijas y se guardan en el DB local (`categories: PantryCategory[]`).
+- **Editar ítem inline**: tocar el nombre lo hace editable; cambiar categoría desde un select.
+- **Resumen por categoría**: mostrar contador "(7 ítems)" en cada cabecera y total general arriba.
 
-## Pantallas y navegación
+### Carrito de la compra (`src/routes/shopping.tsx`, `types.ts`)
 
-Bottom nav fijo con 4 secciones (igual al diseño): **Explorer · Search · New Recipe · Pantry**, más detalle de receta y modo cocina.
+- Añadir `quantity: number` y `unit?: string` a `ShoppingItem`.
+- En la fila: `−  cantidad  +` y selector de unidad (ud / g / kg / ml / L). Al añadir desde una receta, se intenta deducir cantidad del texto del ingrediente.
+- Botón "Mover comprados a despensa" que vacía marcados y suma cantidades a la despensa.
 
-```text
-/                   Explorer  (feed con chips Desayunos/Almuerzos/Postres)
-/search             Search    (filtros por ingredientes de la despensa, utensilios, dificultad)
-/search/online      Búsqueda online con IA (nuevo)
-/new                New Recipe (formulario)
-/pantry             Mi Despensa (categorías + toggles)
-/recipe/$id         Detalle de receta
-/recipe/$id/cook    Modo cocina (pantalla siempre encendida, pasos grandes, timers)
-/recipe/$id/share   Vista exportable a PNG
-/favorites          Favoritos
-/shopping           Lista de compras
-/settings           Idioma, tema, exportar/importar todo (JSON backup)
-```
+### Buscar (`src/routes/search.tsx`)
 
-## Funcionalidad por pantalla
+- **Utensilios en modo OR**: hoy exige que la receta tenga *todos* los seleccionados (`every`). Cambio a `some` → si seleccionas Horno y Batidora, salen recetas que usan horno O batidora (o ambos). Renombro la sección a "Utensilios disponibles" con texto aclaratorio.
+- **Modo "puedo cocinarlo aunque me sobren cosas"**: nuevo toggle por defecto activado **"Mostrar lo que puedo hacer ahora"**. Cuando está activo, muestra recetas donde **tengo todos los ingredientes** (faltan 0), independientemente de que tenga otras cosas extra en la despensa. Cuando está apagado, vuelve al ranking actual por % de match.
+- Ordenar primero "puedo cocinar ahora" (verde), luego "casi" (faltan 1-2), luego el resto.
 
-**Explorer** — hero "¿Qué cocinamos hoy?", buscador, chips de categoría con colores del diseño, feed de cards grandes con foto, tiempo y badge "Destacado".
+## 2. Empaquetado a APK (Capacitor ya está instalado)
 
-**Search** — buscador + secciones colapsables: *Ingredientes que tengo* (chips terracota seleccionables tomados de la despensa), *Utensilios* (horno/licuadora/microondas con icono), *Dificultad* (Fácil/Medio/Difícil). Resultados con badge **"Tienes 8/10 ingredientes"** y lista de los que faltan, con botón para añadirlos a la lista de compras.
+Capacitor está configurado (`capacitor.config.ts`, carpeta `android/`). Falta:
 
-**Search Online (nuevo)** — campo de búsqueda en lenguaje natural, IA devuelve 5 recetas con fuentes; cada una tiene botón "Guardar en mi biblioteca".
+- Asegurar que `vite build` produce SPA estático servible (cambiar a modo SPA si la build actual depende del Worker de Cloudflare; las server functions de IA seguirán funcionando solo si hay internet y dejamos un host público — lo dejo opcional con `VITE_API_BASE`).
+- Añadir `bun add -D @capacitor/assets` para iconos y splash a partir de un PNG de la carpeta `resources/`.
+- Script `scripts/build-apk.ps1` y `build-apk.bat` que hacen:
+  ```
+  bun install
+  bun run build
+  npx cap sync android
+  cd android && gradlew.bat assembleDebug
+  copy app-debug.apk %USERPROFILE%\Desktop\KitchenCabinet.apk
+  ```
+- Script `install-apk.bat` que detecta `adb` (lo descarga si falta vía platform-tools), activa modo desarrollador automáticamente no se puede — pero sí ejecuta `adb install -r KitchenCabinet.apk` con instrucciones claras al usuario.
+- `README-INSTALAR.txt` en español, paso a paso, con requisitos: Android Studio (o solo el JDK 21 + Android command-line tools) y Node/Bun.
 
-**New Recipe** — foto (cámara o galería, se guarda como blob local), título, tiempo, categoría, ingredientes y equipo dinámicos, instrucciones. Botón **"Asistir con IA"** que rellena ingredientes/pasos a partir del título.
+**Aviso honesto**: no puedo *generar* el APK desde aquí (el sandbox no tiene Android SDK ni JDK con licencias aceptadas). El ZIP contendrá todo el código + scripts; el APK se compila en tu PC al correr el `.bat`. Es un solo doble-clic una vez instalado el SDK.
 
-**Pantry** — categorías (Lácteos, Verduras, Especias…) con switches verdes; los apagados se tachan. Botón "Añadir ingrediente". **Caducidad opcional** por ítem con avisos suaves ("usa el tomate antes del viernes").
+### Entrega
 
-**Detalle de receta** — header con foto, badges (categoría, dificultad, tiempo), ingredientes con cantidades, herramientas, pasos numerados con foto, **slider de porciones** que recalcula cantidades, botón rojo **"Modo Cocina"**, corazón para favoritos, menú "..." con: Compartir como imagen, Exportar JSON, Eliminar.
+- Genero `/mnt/documents/kitchen-cabinet.zip` con el proyecto limpio (sin `node_modules`, `dist`, `.git`).
+- Incluye `INSTALAR.bat`, `GENERAR-APK.bat`, `INSTALAR-EN-TELEFONO.bat` y `LEEME.txt`.
 
-**Modo cocina** — pantalla siempre encendida (Wake Lock API), un paso a la vez, fuente grande, **timers integrados** detectados automáticamente en el texto ("reposar 30 minutos" → botón timer).
+## 3. Otras 10 ideas nuevas (elige las que quieras incluir ya o las dejamos para después)
 
-**Compartir como imagen** — plantilla bonita estilo postal (1080×1350, formato Instagram). Opciones: una imagen completa o varias (carrusel: portada + ingredientes + pasos). Descarga local o Web Share.
-
-**Settings** — toggle ES/EN, claro/oscuro, **Exportar todo a JSON** (backup completo) e **Importar JSON** (restaurar en otro teléfono).
-
-## Semilla inicial
-
-~20 recetas en español curadas (las del diseño: Sopa de Tomate Rostizado, Caprese, Salsa Base, Pan de Masa Madre, Pizza Margarita, Avena, Pasta al Pesto, Delicia de Capas, etc.) con sus traducciones al inglés, fotos libres de derechos, tiempos, ingredientes y pasos.
-
-## Sugerencias extra que encajan con tu enfoque local
-
-1. **Backup automático a archivo descargable** cada N cambios (recordatorio amable).
-2. **Modo "vaciar despensa"** — la IA sugiere qué cocinar con lo que está a punto de caducar.
-3. **QR de receta** — además del PNG, generar QR que codifique la receta en JSON (compartir entre teléfonos sin internet, escaneando).
-4. **Historial "Cocinado X veces"** y rating personal de 1–5.
-5. **Filtros dietéticos** (vegetariano, sin gluten, sin lactosa) calculados de los ingredientes.
-6. **Etiquetas/colecciones** propias ("Rápidas entre semana", "Para invitados").
-7. **Tema oscuro** completo usando los tokens dark del DESIGN.md.
+1. **Sustituciones inteligentes**: en una receta, si te falta un ingrediente, sugerir alternativas comunes (mantequilla → aceite, leche → bebida vegetal). Tabla local + IA opcional.
+2. **Planificador semanal**: arrastra recetas a un calendario L-D y genera la lista de la compra agregada de toda la semana.
+3. **Escáner de código de barras** (Capacitor Barcode Scanner) para añadir productos a la despensa al instante.
+4. **Modo "¿qué hay en mi nevera?"**: foto de la nevera → la IA detecta ingredientes y los sugiere para añadir a la despensa.
+5. **Conversor de unidades en vivo**: tocar "200 g" y verlo en cups/oz (útil si traduces recetas inglesas).
+6. **Modo manos libres** en cocina: control por voz ("siguiente paso", "repetir", "timer 5 minutos").
+7. **Importar receta por foto**: hacer foto a una receta de un libro y la IA la transcribe. (Esta no, no quiero IA en mi app)
+8. **Coste estimado por receta**: precio aproximado por ingrediente que tú vas afinando.
+9. **Notificaciones locales** (Capacitor) para avisar de caducidades en la despensa.
+10. **Compartir receta como link efímero**: subir JSON cifrado a un pastebin temporal y dar un link de 24 h, además del QR/PNG actuales.
 
 ## Detalles técnicos
 
-- Tokens del DESIGN.md mapeados en `src/styles.css` como `--color-primary` etc. y fuentes cargadas en `__root.tsx`.
-- Capa de datos `src/lib/db.ts` con tipos `Recipe`, `PantryItem`, `Category` y helpers CRUD sobre IndexedDB; hook `useDb()` con suscripción reactiva.
-- Server functions solo para la IA (búsqueda online, asistir receta, importar URL) — el resto es 100% cliente.
-- Wake Lock, Web Share, File System Access con fallbacks (descarga normal si no están disponibles).
-- Sin login, sin base de datos, sin Cloud — la IA es lo único que toca el servidor.
+- Archivos a tocar: `types.ts`, `db.ts`, `seed.ts` (migrar pantry seed a quantity), `pantry.tsx`, `shopping.tsx`, `search.tsx`, `i18n.ts` (nuevos textos ES/EN).
+- Migración suave: al cargar el DB v1, si los items no tienen `quantity`, se asume `1 ud` y `available` se respeta.
+- Vite build: verificar que `dist/client` es navegable como SPA (TanStack Start con `prerender` o ajuste a `static`). Si hay rutas dinámicas SSR, configuro fallback a `index.html`.
+- Capacitor: `bun add @capacitor/preferences @capacitor/share @capacitor/filesystem` para que export/share funcione nativamente; con fallback web ya existente.
 
-## Lo que queda fuera de v1
+## Lo que NO incluye este plan
 
-- Sincronización entre dispositivos (se cubre con export/import JSON manual).
-- Notificaciones push de caducidad (las alertas son in-app).
-- Comunidad / recetas compartidas públicas.
+- No subo el APK ya compilado (no hay Android SDK en el entorno).
+- No publico la app, solo entrego ZIP.
+- Las 10 ideas extra son sugerencias: dime cuáles añado ahora (por defecto **no** se incluyen para no inflar el alcance).  
+  
+has las 9 idieas que me diste, la q dije q no no la hagas. tambien documenta detalladamente todo el proyecto para poder entenderlo a fondo y crea una documentacion y una guia de uso
 
-Cuando apruebes, lo construyo de una sola vez y lo dejas funcionando en el preview móvil.
+¿Apruebas? Cuando confirmes, hago los cambios, pruebo que compile y te dejo el `.zip` listo.
