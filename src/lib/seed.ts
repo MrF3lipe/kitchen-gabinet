@@ -1,4 +1,4 @@
-import type { PantryItem, Recipe } from "./types";
+import type { PantryCategory, PantryItem, Recipe, Unit } from "./types";
 
 const img = (q: string) =>
   `https://images.unsplash.com/${q}?auto=format&fit=crop&w=900&q=70`;
