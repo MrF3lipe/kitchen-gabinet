@@ -55,6 +55,31 @@ function RecipeDetail() {
     URL.revokeObjectURL(url);
   }
 
+  /**
+   * Idea #10: compartir como link efímero.
+   * Comprimimos el JSON y lo metemos en el hash del URL — sin servidor.
+   * Cualquiera con el enlace puede abrir/importar la receta.
+   */
+  async function shareAsLink() {
+    try {
+      const json = JSON.stringify(recipe);
+      const b64 = btoa(unescape(encodeURIComponent(json)));
+      const url = `${location.origin}/#import=${b64}`;
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        prompt(t("shareLink"), url);
+      }
+      const navAny = navigator as Navigator & { share?: (d: { title?: string; url?: string; text?: string }) => Promise<void> };
+      if (navAny.share) {
+        try { await navAny.share({ title, url }); } catch {}
+      } else {
+        alert(t("linkCopied"));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
   function deleteRecipe() {
     if (confirm(t("deleteConfirm"))) {
       db.deleteRecipe(recipe.id);
@@ -96,6 +121,9 @@ function RecipeDetail() {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={exportJson}>
                   <Download className="mr-2 h-4 w-4" /> {t("exportJson")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={shareAsLink}>
+                  <Link2 className="mr-2 h-4 w-4" /> {t("shareLink")}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={deleteRecipe} className="text-destructive">
                   <Trash2 className="mr-2 h-4 w-4" /> {t("delete")}
