@@ -404,7 +404,7 @@ export function seedRecipes(): Recipe[] {
   ];
 }
 
-import type { PantryCategory, Unit } from "./types";
+// (types ya importados arriba)
 
 export function seedPantryCategories(): PantryCategory[] {
   return [
