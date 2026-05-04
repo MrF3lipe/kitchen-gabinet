@@ -74,20 +74,21 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
+    <html lang="en" suppressHydrationWarning>
+      <head suppressHydrationWarning>
         <HeadContent />
         <script
           dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js');
-              }
-            `,
+            __html: `window.$_TSR=window.$_TSR||{h:function(){},buffer:[],initialized:false,router:{matches:[],dehydratedData:undefined,manifest:undefined,lastMatchId:undefined}};`,
+          }}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if('serviceWorker'in navigator){try{navigator.serviceWorker.register('/sw.js')}catch(e){}}`,
           }}
         />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {children}
         <Scripts />
       </body>

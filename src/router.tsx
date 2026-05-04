@@ -1,5 +1,5 @@
 import { createRouter, useRouter } from "@tanstack/react-router";
-import { createHashHistory } from "@tanstack/history";  // ← importación correcta
+import { createHashHistory, createMemoryHistory } from "@tanstack/history";
 import { routeTree } from "./routeTree.gen";
 
 function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
@@ -56,9 +56,14 @@ function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => vo
 }
 
 export const getRouter = () => {
+  const isServer = typeof window === "undefined";
+  const history = isServer
+    ? createMemoryHistory({ initialEntries: ["/"] })
+    : createHashHistory();
+
   const router = createRouter({
     routeTree,
-    history: createHashHistory(),  // ← hash para Capacitor
+    history,
     context: {},
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
