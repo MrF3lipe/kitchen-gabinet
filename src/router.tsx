@@ -1,4 +1,5 @@
-import { createRouter, useRouter, createHashHistory } from "@tanstack/react-router";
+import { createRouter, useRouter } from "@tanstack/react-router";
+import { createHashHistory } from "@tanstack/history";  // ← importación correcta
 import { routeTree } from "./routeTree.gen";
 
 function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
@@ -57,7 +58,7 @@ function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => vo
 export const getRouter = () => {
   const router = createRouter({
     routeTree,
-    history: createHashHistory(), // <-- Clave: usa hash history para Capacitor
+    history: createHashHistory(),  // ← hash para Capacitor
     context: {},
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
