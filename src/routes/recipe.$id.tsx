@@ -79,6 +79,7 @@ function RecipeDetail() {
     } catch (e) {
       console.error(e);
     }
+  }
 
   function deleteRecipe() {
     if (confirm(t("deleteConfirm"))) {
