@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ShoppingRouteImport } from './routes/shopping'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as PlanRouteImport } from './routes/plan'
 import { Route as PantryRouteImport } from './routes/pantry'
 import { Route as NewRouteImport } from './routes/new'
 import { Route as FavoritesRouteImport } from './routes/favorites'
@@ -33,6 +34,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanRoute = PlanRouteImport.update({
+  id: '/plan',
+  path: '/plan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PantryRoute = PantryRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/favorites': typeof FavoritesRoute
   '/new': typeof NewRoute
   '/pantry': typeof PantryRoute
+  '/plan': typeof PlanRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/favorites': typeof FavoritesRoute
   '/new': typeof NewRoute
   '/pantry': typeof PantryRoute
+  '/plan': typeof PlanRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/favorites': typeof FavoritesRoute
   '/new': typeof NewRoute
   '/pantry': typeof PantryRoute
+  '/plan': typeof PlanRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/new'
     | '/pantry'
+    | '/plan'
     | '/search'
     | '/settings'
     | '/shopping'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/new'
     | '/pantry'
+    | '/plan'
     | '/search'
     | '/settings'
     | '/shopping'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/new'
     | '/pantry'
+    | '/plan'
     | '/search'
     | '/settings'
     | '/shopping'
@@ -152,6 +164,7 @@ export interface RootRouteChildren {
   FavoritesRoute: typeof FavoritesRoute
   NewRoute: typeof NewRoute
   PantryRoute: typeof PantryRoute
+  PlanRoute: typeof PlanRoute
   SearchRoute: typeof SearchRoute
   SettingsRoute: typeof SettingsRoute
   ShoppingRoute: typeof ShoppingRoute
@@ -179,6 +192,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plan': {
+      id: '/plan'
+      path: '/plan'
+      fullPath: '/plan'
+      preLoaderRoute: typeof PlanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pantry': {
@@ -252,6 +272,7 @@ const rootRouteChildren: RootRouteChildren = {
   FavoritesRoute: FavoritesRoute,
   NewRoute: NewRoute,
   PantryRoute: PantryRoute,
+  PlanRoute: PlanRoute,
   SearchRoute: SearchRoute,
   SettingsRoute: SettingsRoute,
   ShoppingRoute: ShoppingRoute,
