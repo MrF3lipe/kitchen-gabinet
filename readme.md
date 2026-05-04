@@ -22,7 +22,7 @@ Con **Kitchen Gabinet** sabrás qué tienes, qué puedes cocinar y qué te falta
 
 ---
 
-## 🧾 Ingredientes (Tecnologías)
+## 🧾 Ingredientes
 
 - **Vue.js** – La base fresca de nuestra interfaz.
 - **Capacitor** – El molde que convierte la web en un APK para que lo lleves al móvil como un tupper.
@@ -37,7 +37,7 @@ Con **Kitchen Gabinet** sabrás qué tienes, qué puedes cocinar y qué te falta
 
 ---
 
-## 👨‍🍳 Modo de preparación (Instalación)
+## 👨‍🍳 Modo de preparación
 
 Sigue esta receta paso a paso y en unos minutos tendrás tu propio ayudante de cocina en el móvil:
 
@@ -58,13 +58,13 @@ Sigue esta receta paso a paso y en unos minutos tendrás tu propio ayudante de c
 
 ---
 
-## 🚀 Quiero probar ya sin cocinar (Release)
+## 🚀 Quiero probar ya sin cocinar
 
 ¿Sin ganas de ensuciar la cocina? Descarga la apk de Kitchen Gabinet v0.1 directamente desde la sección de [Releases](https://github.com/MrF3lipe/kitchen-gabinet/releases) y ten tu Kitchen Gabinet listo en un santiamén. ¡Más rápido que un microondas!
 
 ---
 
-## 🍽️ Plato principal (Características)
+## 🍽️ Plato principal
 
 - 📖 **Recetario digital** – Guarda todas tus recetas, esas que tanto te costó arrancarle a la abuela.
 - 🗓️ **Planificador semanal** – Organiza tus comidas de lunes a domingo y dile adiós al «¿qué cocino hoy?».
@@ -79,7 +79,7 @@ Sigue esta receta paso a paso y en unos minutos tendrás tu propio ayudante de c
 
 ---
 
-## 🍰 Postre (Próximamente)
+## 🍰 Postre
 
 - 🎨 Logo y capturas de pantalla: (aún en el horno).
 - 🔔 Notificaciones: «¡Oye, se te acaba la sal!».
@@ -90,7 +90,7 @@ Sigue esta receta paso a paso y en unos minutos tendrás tu propio ayudante de c
 
 ---
 
-## 🧪 Punto de cocción (Estado)
+## 🧪 Punto de cocción
 
 
 **Alfa**. Como una masa madre recién nacida: burbujea, crece y necesita mimos, pero ya puedes amasar cosas ricas con ella.  
@@ -99,7 +99,7 @@ Si algo no sale bien, no es un *bug*, es una *sorpresa crujiente*.
 
 ---
 
-## 📣 ¿Quieres añadir tu ingrediente? (Contribuciones)
+## 📣 ¿Quieres añadir tu ingrediente?
 
 ¡Este guiso se enriquece con más manos! Si quieres contribuir:
 
