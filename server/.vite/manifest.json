@@ -1,0 +1,321 @@
+{
+  "%23tanstack-start-plugin-adapters": {
+    "file": "assets/__23tanstack-start-plugin-adapters-Cwee5PKy.js",
+    "name": "__23tanstack-start-plugin-adapters",
+    "src": "%23tanstack-start-plugin-adapters",
+    "isDynamicEntry": true
+  },
+  "C:/Users/felip/Desktop/kitchen-gabinet/src/styles.css": {
+    "file": "assets/styles-DY7zZa-L.css",
+    "src": "C:/Users/felip/Desktop/kitchen-gabinet/src/styles.css"
+  },
+  "_AppShell-C8t9H1Vy.js": {
+    "file": "assets/AppShell-C8t9H1Vy.js",
+    "name": "AppShell",
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_router-B9RXT7T5.js"
+    ]
+  },
+  "_RecipeCard-BBV79pYk.js": {
+    "file": "assets/RecipeCard-BBV79pYk.js",
+    "name": "RecipeCard",
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_router-B9RXT7T5.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_heart-SpEnJ-ME.js"
+    ]
+  },
+  "_arrow-left-Dap58hQF.js": {
+    "file": "assets/arrow-left-Dap58hQF.js",
+    "name": "arrow-left",
+    "imports": [
+      "_AppShell-C8t9H1Vy.js"
+    ]
+  },
+  "_check-Dowc9Jbt.js": {
+    "file": "assets/check-Dowc9Jbt.js",
+    "name": "check",
+    "imports": [
+      "_AppShell-C8t9H1Vy.js"
+    ]
+  },
+  "_download-D0prWcNi.js": {
+    "file": "assets/download-D0prWcNi.js",
+    "name": "download",
+    "imports": [
+      "_AppShell-C8t9H1Vy.js"
+    ]
+  },
+  "_heart-SpEnJ-ME.js": {
+    "file": "assets/heart-SpEnJ-ME.js",
+    "name": "heart",
+    "imports": [
+      "_AppShell-C8t9H1Vy.js"
+    ]
+  },
+  "_index-B8kn7z-K.js": {
+    "file": "assets/index-B8kn7z-K.js",
+    "name": "index",
+    "imports": [
+      "_AppShell-C8t9H1Vy.js",
+      "_worker-entry-CdCgfE48.js",
+      "_utils-Ck6P9FCv.js"
+    ]
+  },
+  "_index-sFWfc8xn.js": {
+    "file": "assets/index-sFWfc8xn.js",
+    "name": "index",
+    "imports": [
+      "_worker-entry-CdCgfE48.js"
+    ]
+  },
+  "_plus-ClPaT0rG.js": {
+    "file": "assets/plus-ClPaT0rG.js",
+    "name": "plus",
+    "imports": [
+      "_AppShell-C8t9H1Vy.js"
+    ]
+  },
+  "_router-B9RXT7T5.js": {
+    "file": "assets/router-B9RXT7T5.js",
+    "name": "router",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js"
+    ],
+    "dynamicImports": [
+      "src/routes/shopping.tsx?tsr-split=component",
+      "src/routes/settings.tsx?tsr-split=component",
+      "src/routes/search.tsx?tsr-split=component",
+      "src/routes/pantry.tsx?tsr-split=component",
+      "src/routes/new.tsx?tsr-split=component",
+      "src/routes/favorites.tsx?tsr-split=component",
+      "src/routes/index.tsx?tsr-split=component",
+      "src/routes/recipe.$id.tsx?tsr-split=notFoundComponent",
+      "src/routes/recipe.$id.tsx?tsr-split=component",
+      "src/routes/recipe.$id.share.tsx?tsr-split=component",
+      "src/routes/recipe.$id.cook.tsx?tsr-split=component"
+    ],
+    "assets": [
+      "assets/styles-DY7zZa-L.css"
+    ]
+  },
+  "_share-2-C07dUTCh.js": {
+    "file": "assets/share-2-C07dUTCh.js",
+    "name": "share-2",
+    "imports": [
+      "_AppShell-C8t9H1Vy.js"
+    ]
+  },
+  "_shopping-cart-Dnd7onwp.js": {
+    "file": "assets/shopping-cart-Dnd7onwp.js",
+    "name": "shopping-cart",
+    "imports": [
+      "_AppShell-C8t9H1Vy.js"
+    ]
+  },
+  "_utils-Ck6P9FCv.js": {
+    "file": "assets/utils-Ck6P9FCv.js",
+    "name": "utils",
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_router-B9RXT7T5.js"
+    ]
+  },
+  "_worker-entry-CdCgfE48.js": {
+    "file": "assets/worker-entry-CdCgfE48.js",
+    "name": "worker-entry",
+    "dynamicImports": [
+      "tanstack-start-manifest:v",
+      "_router-B9RXT7T5.js",
+      "node_modules/@tanstack/react-start/dist/plugin/default-entry/start.ts",
+      "%23tanstack-start-plugin-adapters"
+    ]
+  },
+  "_x-7rpJjFTk.js": {
+    "file": "assets/x-7rpJjFTk.js",
+    "name": "x",
+    "imports": [
+      "_AppShell-C8t9H1Vy.js"
+    ]
+  },
+  "node_modules/@tanstack/react-start/dist/plugin/default-entry/start.ts": {
+    "file": "assets/start-HYkvq4Ni.js",
+    "name": "start",
+    "src": "node_modules/@tanstack/react-start/dist/plugin/default-entry/start.ts",
+    "isDynamicEntry": true
+  },
+  "src/routes/favorites.tsx?tsr-split=component": {
+    "file": "assets/favorites-Cj-DRCBa.js",
+    "name": "favorites",
+    "src": "src/routes/favorites.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_RecipeCard-BBV79pYk.js",
+      "_router-B9RXT7T5.js",
+      "_heart-SpEnJ-ME.js"
+    ]
+  },
+  "src/routes/index.tsx?tsr-split=component": {
+    "file": "assets/index-D9twpv5R.js",
+    "name": "index",
+    "src": "src/routes/index.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_RecipeCard-BBV79pYk.js",
+      "_router-B9RXT7T5.js",
+      "_heart-SpEnJ-ME.js"
+    ]
+  },
+  "src/routes/new.tsx?tsr-split=component": {
+    "file": "assets/new-h2UYlnzW.js",
+    "name": "new",
+    "src": "src/routes/new.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_router-B9RXT7T5.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_plus-ClPaT0rG.js",
+      "_x-7rpJjFTk.js"
+    ]
+  },
+  "src/routes/pantry.tsx?tsr-split=component": {
+    "file": "assets/pantry-BKYzUIMN.js",
+    "name": "pantry",
+    "src": "src/routes/pantry.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_utils-Ck6P9FCv.js",
+      "_index-sFWfc8xn.js",
+      "_plus-ClPaT0rG.js",
+      "_x-7rpJjFTk.js",
+      "_router-B9RXT7T5.js"
+    ]
+  },
+  "src/routes/recipe.$id.cook.tsx?tsr-split=component": {
+    "file": "assets/recipe._id.cook-DugYQoXS.js",
+    "name": "recipe._id.cook",
+    "src": "src/routes/recipe.$id.cook.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_router-B9RXT7T5.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_arrow-left-Dap58hQF.js",
+      "_check-Dowc9Jbt.js"
+    ]
+  },
+  "src/routes/recipe.$id.share.tsx?tsr-split=component": {
+    "file": "assets/recipe._id.share-DRm2Zstj.js",
+    "name": "recipe._id.share",
+    "src": "src/routes/recipe.$id.share.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_router-B9RXT7T5.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_arrow-left-Dap58hQF.js",
+      "_download-D0prWcNi.js",
+      "_share-2-C07dUTCh.js"
+    ]
+  },
+  "src/routes/recipe.$id.tsx?tsr-split=component": {
+    "file": "assets/recipe._id-B270gUTn.js",
+    "name": "recipe._id",
+    "src": "src/routes/recipe.$id.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_router-B9RXT7T5.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_RecipeCard-BBV79pYk.js",
+      "_utils-Ck6P9FCv.js",
+      "_index-B8kn7z-K.js",
+      "_check-Dowc9Jbt.js",
+      "_share-2-C07dUTCh.js",
+      "_heart-SpEnJ-ME.js",
+      "_download-D0prWcNi.js"
+    ]
+  },
+  "src/routes/recipe.$id.tsx?tsr-split=notFoundComponent": {
+    "file": "assets/recipe._id-CUVSLrSR.js",
+    "name": "recipe._id",
+    "src": "src/routes/recipe.$id.tsx?tsr-split=notFoundComponent",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_router-B9RXT7T5.js"
+    ]
+  },
+  "src/routes/search.tsx?tsr-split=component": {
+    "file": "assets/search-CfmNGGpq.js",
+    "name": "search",
+    "src": "src/routes/search.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_router-B9RXT7T5.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_RecipeCard-BBV79pYk.js",
+      "_plus-ClPaT0rG.js",
+      "_shopping-cart-Dnd7onwp.js",
+      "_heart-SpEnJ-ME.js"
+    ]
+  },
+  "src/routes/settings.tsx?tsr-split=component": {
+    "file": "assets/settings-kodjmEq5.js",
+    "name": "settings",
+    "src": "src/routes/settings.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_router-B9RXT7T5.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_download-D0prWcNi.js",
+      "_heart-SpEnJ-ME.js",
+      "_shopping-cart-Dnd7onwp.js"
+    ]
+  },
+  "src/routes/shopping.tsx?tsr-split=component": {
+    "file": "assets/shopping-D1CBpMlW.js",
+    "name": "shopping",
+    "src": "src/routes/shopping.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js",
+      "_AppShell-C8t9H1Vy.js",
+      "_utils-Ck6P9FCv.js",
+      "_index-sFWfc8xn.js",
+      "_index-B8kn7z-K.js",
+      "_check-Dowc9Jbt.js",
+      "_plus-ClPaT0rG.js",
+      "_x-7rpJjFTk.js",
+      "_router-B9RXT7T5.js"
+    ]
+  },
+  "tanstack-start-manifest:v": {
+    "file": "assets/_tanstack-start-manifest_v-7qcYRdFl.js",
+    "name": "_tanstack-start-manifest_v",
+    "src": "tanstack-start-manifest:v",
+    "isDynamicEntry": true
+  },
+  "virtual:cloudflare/worker-entry": {
+    "file": "index.js",
+    "name": "index",
+    "src": "virtual:cloudflare/worker-entry",
+    "isEntry": true,
+    "imports": [
+      "_worker-entry-CdCgfE48.js"
+    ]
+  }
+}

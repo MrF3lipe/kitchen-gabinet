@@ -16,7 +16,6 @@ import { Route as PantryRouteImport } from './routes/pantry'
 import { Route as NewRouteImport } from './routes/new'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SearchOnlineRouteImport } from './routes/search.online'
 import { Route as RecipeIdRouteImport } from './routes/recipe.$id'
 import { Route as RecipeIdShareRouteImport } from './routes/recipe.$id.share'
 import { Route as RecipeIdCookRouteImport } from './routes/recipe.$id.cook'
@@ -56,11 +55,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SearchOnlineRoute = SearchOnlineRouteImport.update({
-  id: '/online',
-  path: '/online',
-  getParentRoute: () => SearchRoute,
-} as any)
 const RecipeIdRoute = RecipeIdRouteImport.update({
   id: '/recipe/$id',
   path: '/recipe/$id',
@@ -82,11 +76,10 @@ export interface FileRoutesByFullPath {
   '/favorites': typeof FavoritesRoute
   '/new': typeof NewRoute
   '/pantry': typeof PantryRoute
-  '/search': typeof SearchRouteWithChildren
+  '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
   '/recipe/$id': typeof RecipeIdRouteWithChildren
-  '/search/online': typeof SearchOnlineRoute
   '/recipe/$id/cook': typeof RecipeIdCookRoute
   '/recipe/$id/share': typeof RecipeIdShareRoute
 }
@@ -95,11 +88,10 @@ export interface FileRoutesByTo {
   '/favorites': typeof FavoritesRoute
   '/new': typeof NewRoute
   '/pantry': typeof PantryRoute
-  '/search': typeof SearchRouteWithChildren
+  '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
   '/recipe/$id': typeof RecipeIdRouteWithChildren
-  '/search/online': typeof SearchOnlineRoute
   '/recipe/$id/cook': typeof RecipeIdCookRoute
   '/recipe/$id/share': typeof RecipeIdShareRoute
 }
@@ -109,11 +101,10 @@ export interface FileRoutesById {
   '/favorites': typeof FavoritesRoute
   '/new': typeof NewRoute
   '/pantry': typeof PantryRoute
-  '/search': typeof SearchRouteWithChildren
+  '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
   '/recipe/$id': typeof RecipeIdRouteWithChildren
-  '/search/online': typeof SearchOnlineRoute
   '/recipe/$id/cook': typeof RecipeIdCookRoute
   '/recipe/$id/share': typeof RecipeIdShareRoute
 }
@@ -128,7 +119,6 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shopping'
     | '/recipe/$id'
-    | '/search/online'
     | '/recipe/$id/cook'
     | '/recipe/$id/share'
   fileRoutesByTo: FileRoutesByTo
@@ -141,7 +131,6 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shopping'
     | '/recipe/$id'
-    | '/search/online'
     | '/recipe/$id/cook'
     | '/recipe/$id/share'
   id:
@@ -154,7 +143,6 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shopping'
     | '/recipe/$id'
-    | '/search/online'
     | '/recipe/$id/cook'
     | '/recipe/$id/share'
   fileRoutesById: FileRoutesById
@@ -164,7 +152,7 @@ export interface RootRouteChildren {
   FavoritesRoute: typeof FavoritesRoute
   NewRoute: typeof NewRoute
   PantryRoute: typeof PantryRoute
-  SearchRoute: typeof SearchRouteWithChildren
+  SearchRoute: typeof SearchRoute
   SettingsRoute: typeof SettingsRoute
   ShoppingRoute: typeof ShoppingRoute
   RecipeIdRoute: typeof RecipeIdRouteWithChildren
@@ -221,13 +209,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/search/online': {
-      id: '/search/online'
-      path: '/online'
-      fullPath: '/search/online'
-      preLoaderRoute: typeof SearchOnlineRouteImport
-      parentRoute: typeof SearchRoute
-    }
     '/recipe/$id': {
       id: '/recipe/$id'
       path: '/recipe/$id'
@@ -252,17 +233,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface SearchRouteChildren {
-  SearchOnlineRoute: typeof SearchOnlineRoute
-}
-
-const SearchRouteChildren: SearchRouteChildren = {
-  SearchOnlineRoute: SearchOnlineRoute,
-}
-
-const SearchRouteWithChildren =
-  SearchRoute._addFileChildren(SearchRouteChildren)
-
 interface RecipeIdRouteChildren {
   RecipeIdCookRoute: typeof RecipeIdCookRoute
   RecipeIdShareRoute: typeof RecipeIdShareRoute
@@ -282,7 +252,7 @@ const rootRouteChildren: RootRouteChildren = {
   FavoritesRoute: FavoritesRoute,
   NewRoute: NewRoute,
   PantryRoute: PantryRoute,
-  SearchRoute: SearchRouteWithChildren,
+  SearchRoute: SearchRoute,
   SettingsRoute: SettingsRoute,
   ShoppingRoute: ShoppingRoute,
   RecipeIdRoute: RecipeIdRouteWithChildren,
@@ -290,3 +260,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

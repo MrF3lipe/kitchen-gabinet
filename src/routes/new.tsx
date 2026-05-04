@@ -1,17 +1,27 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Camera, Plus, X, Save, Sparkles } from "lucide-react";
+import { Camera, Plus, X, Save } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { db, uid } from "@/lib/db";
 import { useT } from "@/lib/i18n";
 import type { Category, Difficulty, Ingredient, Recipe } from "@/lib/types";
-import { aiAssistRecipe } from "@/server/ai.functions";
 
 export const Route = createFileRoute("/new")({
   component: NewRecipe,
 });
 
-const CATS: Category[] = ["breakfast", "lunch", "dinner", "dessert", "snack", "bakery", "drink", "sauce", "salad", "soup"];
+const CATS: Category[] = [
+  "breakfast",
+  "lunch",
+  "dinner",
+  "dessert",
+  "snack",
+  "bakery",
+  "drink",
+  "sauce",
+  "salad",
+  "soup",
+];
 
 function NewRecipe() {
   const t = useT();
@@ -24,7 +34,6 @@ function NewRecipe() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([{ name: "", quantity: "" }]);
   const [equipment, setEquipment] = useState<string[]>([""]);
   const [instructions, setInstructions] = useState("");
-  const [aiBusy, setAiBusy] = useState(false);
 
   function onPhoto(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -34,37 +43,25 @@ function NewRecipe() {
     reader.readAsDataURL(f);
   }
 
-  async function aiAssist() {
-    if (!title.trim()) return;
-    setAiBusy(true);
-    try {
-      const data = await aiAssistRecipe({ data: { title } });
-      if (data.ingredients) setIngredients(data.ingredients);
-      if (data.equipment) setEquipment(data.equipment);
-      if (data.instructions) setInstructions(data.instructions);
-      if (data.timeMinutes) setTime(String(data.timeMinutes));
-      if (data.category) setCategory(data.category as Category);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setAiBusy(false);
-    }
-  }
-
   function save() {
     if (!title.trim()) return;
     const recipe: Recipe = {
       id: uid(),
       title: title.trim(),
       description: instructions.split("\n")[0]?.slice(0, 140) ?? "",
-      image: photo ?? "https://images.unsplash.com/photo-1495195134817-aeb325a55b65?auto=format&fit=crop&w=900&q=70",
+      image:
+        photo ??
+        "https://images.unsplash.com/photo-1495195134817-aeb325a55b65?auto=format&fit=crop&w=900&q=70",
       category,
       difficulty,
       timeMinutes: parseInt(time) || 30,
       servings: 4,
       ingredients: ingredients.filter((i) => i.name.trim()),
       equipment: equipment.filter((e) => e.trim()),
-      steps: instructions.split(/\n+/).map((s) => s.trim()).filter(Boolean),
+      steps: instructions
+        .split(/\n+/)
+        .map((s) => s.trim())
+        .filter(Boolean),
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
@@ -76,7 +73,9 @@ function NewRecipe() {
     <AppShell>
       <div className="space-y-6 px-4 pt-4 pb-4">
         <header>
-          <h1 className="font-display text-4xl font-semibold tracking-tight">{t("newRecipe")}</h1>
+          <h1 className="font-display text-4xl font-semibold tracking-tight">
+            {t("newRecipe")}
+          </h1>
           <p className="mt-1 text-sm text-on-surface-variant">{t("docCreation")}</p>
         </header>
 
@@ -87,10 +86,18 @@ function NewRecipe() {
             ) : (
               <div className="flex flex-col items-center gap-2">
                 <Camera className="h-8 w-8 text-primary" />
-                <span className="text-xs font-bold uppercase tracking-wider">{t("addPhoto")}</span>
+                <span className="text-xs font-bold uppercase tracking-wider">
+                  {t("addPhoto")}
+                </span>
               </div>
             )}
-            <input type="file" accept="image/*" capture="environment" onChange={onPhoto} className="hidden" />
+            <input
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={onPhoto}
+              className="hidden"
+            />
           </label>
 
           <Field label={t("recipeTitle")}>
@@ -118,7 +125,9 @@ function NewRecipe() {
               className="w-full border-b border-outline-variant bg-transparent py-2 outline-none focus:border-primary"
             >
               {CATS.map((c) => (
-                <option key={c} value={c}>{t(c)}</option>
+                <option key={c} value={c}>
+                  {t(c)}
+                </option>
               ))}
             </select>
           </Field>
@@ -131,7 +140,9 @@ function NewRecipe() {
                   type="button"
                   onClick={() => setDifficulty(d)}
                   className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider ${
-                    difficulty === d ? "bg-primary text-primary-foreground" : "text-on-surface-variant"
+                    difficulty === d
+                      ? "bg-primary text-primary-foreground"
+                      : "text-on-surface-variant"
                   }`}
                 >
                   {t(d)}
@@ -139,16 +150,6 @@ function NewRecipe() {
               ))}
             </div>
           </Field>
-
-          <button
-            type="button"
-            onClick={aiAssist}
-            disabled={!title.trim() || aiBusy}
-            className="flex w-full items-center justify-center gap-2 rounded-full border border-primary py-2.5 text-sm font-semibold text-primary disabled:opacity-50"
-          >
-            <Sparkles className="h-4 w-4" />
-            {aiBusy ? t("aiThinking") : t("aiAssist")}
-          </button>
         </div>
 
         <ListSection
@@ -218,10 +219,18 @@ function NewRecipe() {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div>
-      <div className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">{label}</div>
+      <div className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+        {label}
+      </div>
       {children}
     </div>
   );
@@ -278,7 +287,9 @@ function ListSection<T>({
         <button
           type="button"
           onClick={() => onChange([...items, newItem()])}
-          className={`flex items-center gap-1 text-sm font-semibold ${accent === "primary" ? "text-primary" : "text-secondary"}`}
+          className={`flex items-center gap-1 text-sm font-semibold ${
+            accent === "primary" ? "text-primary" : "text-secondary"
+          }`}
         >
           <Plus className="h-4 w-4" /> {addLabel}
         </button>

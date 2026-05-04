@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Kitchen Cabinet</string>
+    <string name="title_activity_main">Kitchen Cabinet</string>
+    <string name="package_name">com.kitchencabinet</string>
+    <string name="custom_url_scheme">com.kitchencabinet</string>
+</resources>
